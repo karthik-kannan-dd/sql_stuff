@@ -92,14 +92,6 @@ DELETE, UPDATE, TRUNCATE, DROP, ALTER, INSERT, GRANT, REVOKE, MERGE
 
    See [`hooks/settings.example.json`](hooks/settings.example.json) for a full example.
 
-### How It Works
-
-1. Claude attempts to run a `snow sql` command
-2. The hook receives the command as JSON via stdin
-3. It checks if the SQL contains any dangerous keywords
-4. If found, it returns `{"decision": "block", "reason": "..."}` to prevent execution
-5. If safe, it exits silently and the command proceeds
-
 ### Example
 
 ```
@@ -147,12 +139,3 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-### Dashboard Features Claude Can Build
-
-| Feature | Libraries |
-|---------|-----------|
-| Interactive filters | Streamlit sidebar widgets |
-| Data tables | Pandas + Streamlit dataframes |
-| Charts | Plotly, Altair, or Matplotlib |
-| Database queries | Snowflake connector, SQLAlchemy |
-| Export options | CSV/Excel download buttons |
