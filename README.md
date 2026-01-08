@@ -118,7 +118,7 @@ Once you've validated your analysis in markdown, you can ask Claude to turn it i
 
 ### Example: Streamlit Dashboard
 
-See [`lateness_analysis/tools/`](lateness_analysis/tools/) for a working example.
+See [`analysis/lateness_analysis/tools/`](analysis/lateness_analysis/tools/) for a working example.
 
 ```
 You: I want to build a dashboard to look up lateness for individual dashers
