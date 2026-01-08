@@ -1,4 +1,4 @@
-# Tier 1: Egregious Time Abuse - Individual Deliveries
+# Tier 1: Egregious Lateness - Individual Deliveries
 
 > **Analysis Date:** January 7, 2026
 > **Data Source:** `edw.opex.fact_dx_fraud_pc_rolling_scores`
@@ -12,7 +12,7 @@
 These 14 dashers show **constant, extreme lateness** on virtually every delivery:
 - **56-94% of deliveries have total lateness >30 minutes**
 - Median total lateness: **33-100 minutes**
-- Three patterns: Dropoff-Heavy (classic), Pickup-Heavy (hidden), and Mixed
+- Three patterns: Dropoff-Heavy, Pickup-Heavy, and Mixed
 
 | Dasher ID | Deliveries | % >30min Total | Med Pickup | Med Dropoff | Med Total | Pattern |
 |-----------|------------|----------------|------------|-------------|-----------|---------|
@@ -71,39 +71,6 @@ These 14 dashers show **constant, extreme lateness** on virtually every delivery
 | **66919671** | **38.02 min late** | -2.66 min (early) | **36.63 min** | **58.6%** |
 | **53090914** | **46.95 min late** | -11.48 min (early) | **36.24 min** | **56.5%** |
 
-**Pattern:** Hold at restaurant (accept order but don't pickup for 30-50 min), then deliver quickly.
-
----
-
-## Key Observations
-
-### The "Smoking Gun" Pattern for Dropoff-Heavy Lateness
-
-| Step | Typical Behavior | Late Behavior |
-|------|------------------|---------------|
-| Pickup | On time (~0 min) | **Early** (-2 to -5 min) |
-| Hold Time | ~10 min | **60-120 min** |
-| Dropoff | On time (~0 min) | **~100 min late** |
-
-The dashers:
-1. Arrive at restaurant **early or on time** (food is ready)
-2. Pick up the food promptly
-3. Take **1.5-2 hours** to deliver to customer
-4. Do this on **>50% of deliveries** - systematic, not occasional
-
-### The "Hidden" Pattern for Pickup-Heavy Lateness
-
-| Step | Typical Behavior | Pickup-Heavy Lateness |
-|------|------------------|-----------------------|
-| Pickup | On time (~0 min) | **~40 min late** |
-| Hold Time | ~10 min | ~10 min |
-| Dropoff | On time (~0 min) | **Early** (-5 to -10 min) |
-| **Total** | ~10 min | **~35 min** |
-
-This pattern:
-1. **Delays pickup** by 30-50 minutes (multi-apping or taking breaks)
-2. Then delivers relatively promptly
-3. Total lateness is still high despite early dropoff
 
 ---
 
@@ -124,25 +91,6 @@ WHERE dasher_id IN (8026806, 65023622, 67706906, 57134452, 67754477, 67433810, 6
   AND assignment_created_at >= dateadd(dd,-28,current_date())
 ORDER BY dasher_id, assignment_created_at DESC;
 ```
-
----
-
-## Recommendations
-
-### 1. Flag All 14 Tier 1 Dashers for Immediate Review
-- 56-94% of their deliveries are 30+ min total late
-- Consistent pattern across 21-120 deliveries each
-- Clear evidence of systematic time abuse
-
-### 2. Use Total Lateness for Detection
-- Captures dropoff-heavy pattern (most common)
-- Captures pickup-heavy pattern (harder to detect with dropoff-only metrics)
-- Captures mixed pattern
-
-### 3. Set Automated Alerts
-Flag any dasher with:
-- 20+ TBPM deliveries AND
-- >50% of deliveries with Total Lateness >30 min
 
 ---
 

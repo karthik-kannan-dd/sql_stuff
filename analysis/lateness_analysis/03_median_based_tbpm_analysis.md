@@ -23,9 +23,9 @@ Using a **median-based approach** with **Total Lateness** (pickup + dropoff), we
 
 ---
 
-## Tier 1: Egregious Time Abuse (>50% deliveries 30+ min total late)
+## Tier 1: Egregious Lateness (>50% deliveries 30+ min total late)
 
-These dashers are consistently late on the majority of their deliveries - clear abuse pattern.
+These dashers are consistently late on the majority of their deliveries.
 
 | Dasher ID | Deliveries | Med Pickup | Med Dropoff | Med Total Late | % >30min |
 |-----------|------------|------------|-------------|----------------|----------|
@@ -54,30 +54,9 @@ These dashers are consistently late on the majority of their deliveries - clear 
 **Pattern B: Pickup-Heavy (2 dashers)**
 - **Dasher 66919671**: Median pickup 38 min late, median dropoff -2.7 min
 - **Dasher 53090914**: Median pickup 47 min late, median dropoff -11.5 min
-- These dashers hold orders at the restaurant, then deliver promptly
 
 **Pattern C: Mixed (2 dashers)**
 - **Dasher 35560585**: 12 min pickup late, 17 min dropoff late - lateness spread across both
-
----
-
-## Detection Criteria for Time Abuse
-
-### Recommended Flags (using Total Lateness)
-
-| Tier | Criteria | Action |
-|------|----------|--------|
-| **Tier 1** | >50% deliveries with total lateness >30 min | Immediate review |
-| **Tier 2** | >50% deliveries with total lateness >15 min | Monitoring/Warning |
-| **Tier 3** | >50% deliveries with total lateness >10 min | Pattern tracking |
-
-### Additional Signal: Pickup-Heavy vs Dropoff-Heavy
-
-Flag dashers where:
-- Med pickup lateness > 30 min AND med dropoff lateness < 15 min (Pickup-Heavy)
-- Med pickup lateness < 5 min AND med dropoff lateness > 30 min (Dropoff-Heavy)
-
-Both patterns indicate time abuse, but with different tactics.
 
 ---
 
@@ -157,21 +136,6 @@ FROM dasher_medians
 WHERE (100.0 * count_over_10min_total / total_deliveries) > 50
   AND (100.0 * count_over_15min_total / total_deliveries) <= 50;
 ```
-
----
-
-## Recommendations
-
-### Immediate Actions
-
-1. **Review Tier 1 dashers (14 total)** for potential time abuse
-   - 56-94% of their deliveries are 30+ min total late
-   - Consistent pattern across 21-120 deliveries each
-   - No data quality issues (max single scores are low)
-
-2. **Implement total lateness monitoring** for TBPM dashers
-   - Flag dashers with >50% deliveries 30+ min total late
-   - Track both pickup-heavy and dropoff-heavy patterns
 
 ---
 

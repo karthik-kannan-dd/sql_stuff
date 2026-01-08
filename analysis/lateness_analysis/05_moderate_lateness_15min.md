@@ -71,18 +71,6 @@ Some Tier 2 dashers show lateness spread across both pickup and dropoff:
 
 ---
 
-## Detection Criteria
-
-### Recommended Flags (using Total Lateness)
-
-| Tier | Criteria | Action |
-|------|----------|--------|
-| **Tier 1** | >50% deliveries with total lateness >30 min | Immediate review |
-| **Tier 2** | >50% with total lateness >15 min (excl Tier 1) | Monitoring/Warning |
-| **Tier 3** | >50% with total lateness >10 min (excl Tier 1-2) | Pattern tracking |
-
----
-
 ## SQL Queries
 
 ### Find Tier 2 Dashers (>50% over 15 min, <=50% over 30 min total late)
@@ -157,28 +145,6 @@ FROM dasher_medians
 WHERE (100.0 * count_over_10min_total / total_deliveries) > 50
   AND (100.0 * count_over_15min_total / total_deliveries) <= 50;
 ```
-
----
-
-## Recommendations
-
-### For Tier 2 Dashers (77 total)
-
-1. **Issue warnings** - These dashers show concerning patterns but not as severe as Tier 1
-2. **Monitor progression** - Track if they move toward Tier 1 behavior
-3. **Investigate pickup-heavy patterns** - Many show delays primarily at pickup phase
-
-### For Tier 3 Dashers (329 total)
-
-1. **Pattern tracking** - Monitor for escalation
-2. **Educational outreach** - May not realize impact of delays
-3. **Lower priority than Tier 1/2** - But still worth monitoring
-
-### Metric Update
-
-- **Switch to Total Lateness** for all TBPM abuse detection
-- **Track both pickup and dropoff** separately to identify pattern type
-- **Flag pickup-heavy abusers** who appear "on-time" by dropoff metrics only
 
 ---
 

@@ -50,7 +50,6 @@ These dashers have high L50 sum scores driven almost entirely by a **single extr
 - Only 1 delivery out of 50 with score > 100
 - Median total lateness is near 0 or negative (on time!)
 - Only 1 delivery out of 50 is 60+ minutes total late
-- **Root cause:** Likely data anomalies (unclosed deliveries, system errors)
 
 ### Category 2: Consistently Late - Dropoff Heavy (4 dashers)
 
@@ -69,7 +68,6 @@ These dashers exhibit **persistent lateness across all deliveries** with no extr
 - **Early to pickup** (negative pickup lateness) - food is ready, they pick it up
 - **Very late to dropoff** (77-101 minutes)
 - Median total lateness: **80-99 minutes**
-- **Root cause:** Consistent TBPM time abuse pattern
 
 ### Category 3: Pickup-Heavy Lateness (1 dasher) - NEW PATTERN
 
@@ -79,30 +77,12 @@ These dashers exhibit **persistent lateness across all deliveries** with no extr
 
 **This dasher shows a different pattern:**
 - Very late to **pickup** (~42 min) but relatively on-time to dropoff (~7 min)
-- Suggests holding orders at the restaurant level, then delivering promptly
 
 ### Category 4: Requires Investigation (1 dasher)
 
 | Dasher ID | L50 Sum | Notes |
 |-----------|---------|-------|
 | 43769019 | 1,075.97 | Max score only 0.64 but sum is 1,076 - potential data issue |
-
----
-
-## Recommendations
-
-### 1. Implement Outlier Filtering
-When ranking dashers by lateness, exclude or cap extreme single-delivery scores (e.g., scores > 100) to surface consistently late dashers.
-
-### 2. Use Total Lateness as Primary Metric
-Use **Total Lateness = Pickup + Dropoff** to capture lateness patterns.
-
-### 3. Flag Data Quality Issues
-Deliveries showing 15-28 days lateness are data anomalies that should be excluded.
-
-### 4. Investigate Both Patterns
-- **Dropoff-Heavy:** Early pickup, very late dropoff (classic multi-apping)
-- **Pickup-Heavy:** Late pickup, normal dropoff (holding at restaurant)
 
 ---
 
