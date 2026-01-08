@@ -55,6 +55,70 @@ sql_analysis/
     └── analysis.md
 ```
 
+## Safety: Read-Only SQL Hook
+
+When giving Claude access to your database, you probably want to ensure it can only run `SELECT` queries and not accidentally `DELETE` or `DROP` your tables.
+
+The [`hooks/validate-snow-sql.sh`](hooks/validate-snow-sql.sh) script is a **PreToolUse hook** that intercepts all `snow sql` commands and blocks any containing dangerous keywords.
+
+### Blocked Keywords
+
+```
+DELETE, UPDATE, TRUNCATE, DROP, ALTER, INSERT, GRANT, REVOKE, MERGE
+```
+
+### Installation
+
+1. Copy the hook script to your Claude hooks directory:
+   ```bash
+   cp hooks/validate-snow-sql.sh ~/.claude/hooks/
+   chmod +x ~/.claude/hooks/validate-snow-sql.sh
+   ```
+
+2. Add the hook to your project's `.claude/settings.local.json`:
+   ```json
+   {
+     "permissions": {
+       "allow": ["Bash(snow sql:*)"]
+     },
+     "hooks": {
+       "PreToolUse": [
+         {
+           "matcher": "Bash",
+           "hooks": [
+             {
+               "type": "command",
+               "command": "~/.claude/hooks/validate-snow-sql.sh"
+             }
+           ]
+         }
+       ]
+     }
+   }
+   ```
+
+   See [`hooks/settings.example.json`](hooks/settings.example.json) for a full example.
+
+### How It Works
+
+1. Claude attempts to run a `snow sql` command
+2. The hook receives the command as JSON via stdin
+3. It checks if the SQL contains any dangerous keywords
+4. If found, it returns `{"decision": "block", "reason": "..."}` to prevent execution
+5. If safe, it exits silently and the command proceeds
+
+### Example
+
+```
+You: Delete all records from the users table
+
+Claude: [attempts to run: snow sql -q "DELETE FROM users"]
+
+Hook: BLOCKED: This session only has SELECT (read-only) permissions.
+      Commands containing DELETE, UPDATE, TRUNCATE, DROP, ALTER,
+      INSERT, GRANT, REVOKE, or MERGE are not allowed.
+```
+
 ## Workflow
 
 ### Running Queries
