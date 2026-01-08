@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(snow sql:*)",
+      "Bash(python:*)",
+      "Bash(./venv/bin/streamlit run:*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/karthik.kannan/.claude/hooks/validate-snow-sql.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
