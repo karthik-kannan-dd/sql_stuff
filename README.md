@@ -13,14 +13,7 @@ Instead of context-switching between SQL clients, spreadsheets, and documentatio
 ## Prerequisites
 
 1. **Claude Code** - Install from [claude.ai/claude-code](https://claude.ai/claude-code)
-2. **Snowflake CLI** (`snow`) - Or your preferred database CLI tool
-   ```bash
-   # Install Snowflake CLI
-   pip install snowflake-cli-labs
-
-   # Configure connection
-   snow connection add
-   ```
+2. **Snowflake CLI** (`snow`) - Follow the [SnowSQL setup guide](https://doordash.atlassian.net/wiki/spaces/DATA/pages/839843843/Connecting+to+Snowflake#SnowSQL-(Command-Line)) to install and configure
 
 ## Setup
 
