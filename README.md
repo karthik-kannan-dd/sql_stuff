@@ -12,7 +12,7 @@ Instead of context-switching between SQL clients, spreadsheets, and documentatio
 
 ## Prerequisites
 
-1. **Claude Code** - Install from [claude.ai/claude-code](https://claude.ai/claude-code)
+1. **Claude Code** - Follow the [installation guide](https://github.com/doordash/learn-claude/blob/main/docs/codelabs/0-The-Basics/0-getting-started.md#2-on-your-macos-terminal)
 2. **Snowflake CLI** (`snow`) - Follow the [SnowSQL setup guide](https://doordash.atlassian.net/wiki/spaces/DATA/pages/839843843/Connecting+to+Snowflake#SnowSQL-(Command-Line)) to install and configure
 
 ## Setup
