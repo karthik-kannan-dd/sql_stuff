@@ -136,6 +136,10 @@ Claude: I'll create a Streamlit app that:
 ### Running Dashboards
 
 ```bash
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate
+
 # Install dependencies
 pip install -r requirements.txt
 
