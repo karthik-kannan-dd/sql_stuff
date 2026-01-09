@@ -32,7 +32,7 @@ Top 15 Tier 2 dashers by percentage over 15 min:
 | 2573909 | 60 | 18.61 min | -0.07 min | **17.59 min** | **80.0%** | 5.0% | U |
 | 60292371 | 32 | 20.12 min | -1.43 min | **18.49 min** | **75.0%** | 3.1% | F |
 | 29043870 | 20 | 13.30 min | 8.09 min | **26.17 min** | **75.0%** | 35.0% | F |
-| 32402341 | 40 | 26.18 min | -0.55 min | **24.43 min** | **72.5%** | 45.0% | F - Store wait 3-10x peers ([05a](05a_dasher_32402341_store_wait_analysis.md)) |
+| 32402341 | 40 | 26.18 min | -0.55 min | **24.43 min** | **72.5%** | 45.0% | F - Store wait 3-10x peers ([06a](06a_deep_dive_dasher_32402341.md)) |
 | 46904950 | 21 | 11.88 min | 4.37 min | **21.62 min** | **71.4%** | 19.0% | N - Store wait 2-6x peers, but reactivated by Fraud Ops |
 | 61381648 | 21 | 20.37 min | -2.23 min | **17.95 min** | **71.4%** | 9.5% | U- Golden reviews  |
 | 7372796 | 31 | 17.43 min | 2.95 min | **21.20 min** | **71.0%** | 29.0% | |
