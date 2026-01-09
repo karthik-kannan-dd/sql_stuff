@@ -10,6 +10,14 @@ Once you do analysis, restrict yourself to talking about the results and insight
 # Table Schemas
 Table schemas will be present in the table_schemas folder. If you find that one doesn't exist for a table we're querying, describe it first and add the schema to the corresponding MD file.  Reference the table schema while querying it to verify if you're using the right columns. 
 
+# Useful Abbrevatiations
+Mx = Merchant
+Dx = Dasher
+Cx = Consumer
+Comms = Consumer
 
+# Important
+- When querying large tables like dimension_deliveries ALWAYS restrict by date. If you don't know what dates to restrict by, ask. 
+- Queries often take long, this is because we're competing with other folks in th ecompany, and queries can sometime be queued for a while. Only restart them if they take more than 10 monitues
 
 
