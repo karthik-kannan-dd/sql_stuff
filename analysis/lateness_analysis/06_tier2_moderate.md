@@ -9,7 +9,7 @@
 
 ## Summary
 
-These dashers show **selective lateness patterns**. Unlike Tier 1 (egregious, constant lateness), these dashers mix on-time deliveries with significantly late ones.
+These dashers have **>50% of deliveries with 15+ min total lateness, but ≤50% with 30+ min total lateness**. They are late more often than not, but less severely than Tier 1.
 
 ### Population by Tier (using Total Lateness)
 
