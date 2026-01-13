@@ -15,14 +15,22 @@ Cases where:
    - `FlagEntityForTopUpLabelToActionRule`
    - `FlagEntityForTimeModeLabelToActionRule`
 
-Query has been sent for golden review at https://docs.google.com/spreadsheets/d/1iLg5kikKGU0edBroapDXNunoxK32epSjtY4csMTZlSM/edit?gid=0#gid=0
+Query results have been sent for golden review at https://docs.google.com/spreadsheets/d/1iLg5kikKGU0edBroapDXNunoxK32epSjtY4csMTZlSM/edit?gid=0#gid=0
 
 ## Query
 ```sql
 SELECT DISTINCT
     entity_id AS delivery_id,
     JSON_EXTRACT_PATH_TEXT(FACT_RESULTS, 'dasher_id.output.value') AS dasher_id,
-    DATE(iguazu_sent_at) AS iguazu_date
+    DATE(iguazu_sent_at) AS iguazu_date,
+    ROUND((JSON_EXTRACT_PATH_TEXT(FACT_RESULTS, 'actual_pickup_time_in_epoch_seconds.output')::NUMBER
+         - JSON_EXTRACT_PATH_TEXT(FACT_RESULTS, 'dx_facing_eta_pickup_in_epoch_seconds.output')::NUMBER) / 60.0, 2) AS pickup_lateness,
+    ROUND((JSON_EXTRACT_PATH_TEXT(FACT_RESULTS, 'actual_dropoff_time_in_epoch_seconds.output')::NUMBER
+         - JSON_EXTRACT_PATH_TEXT(FACT_RESULTS, 'dx_facing_eta_dropoff_in_epoch_seconds.output')::NUMBER) / 60.0, 2) AS dropoff_lateness,
+    ROUND((JSON_EXTRACT_PATH_TEXT(FACT_RESULTS, 'actual_pickup_time_in_epoch_seconds.output')::NUMBER
+         - JSON_EXTRACT_PATH_TEXT(FACT_RESULTS, 'dx_facing_eta_pickup_in_epoch_seconds.output')::NUMBER
+         + JSON_EXTRACT_PATH_TEXT(FACT_RESULTS, 'actual_dropoff_time_in_epoch_seconds.output')::NUMBER
+         - JSON_EXTRACT_PATH_TEXT(FACT_RESULTS, 'dx_facing_eta_dropoff_in_epoch_seconds.output')::NUMBER) / 60.0, 2) AS total_lateness
 FROM iguazu.server_events_production.risk_checkpoint_evaluation_event_ice
 WHERE checkpoint = 'dx_dropoff_delivery'
   AND iguazu_sent_at >= DATEADD(day, -2, CURRENT_DATE())
@@ -40,16 +48,24 @@ ORDER BY RANDOM()
 LIMIT 100;
 ```
 
+## Lateness Calculation
+Lateness values are calculated using checkpoint facts (in minutes):
+- **pickup_lateness** = `(actual_pickup_time_in_epoch_seconds - dx_facing_eta_pickup_in_epoch_seconds) / 60`
+- **dropoff_lateness** = `(actual_dropoff_time_in_epoch_seconds - dx_facing_eta_dropoff_in_epoch_seconds) / 60`
+- **total_lateness** = `pickup_lateness + dropoff_lateness`
+
+Positive values = late, negative values = early.
+
 ## Output
 - **File:** `v1_fraud_sample.csv`
 - **Count:** 100 deliveries
-- **Date range:** Last 2 days (2026-01-08 to 2026-01-09)
+- **Date range:** Last 2 days (2026-01-10 to 2026-01-12)
 
 ## Sample Preview
-| DELIVERY_ID | DASHER_ID | IGUAZU_DATE |
-|-------------|-----------|-------------|
-| 276470497415 | 11911262 | 2026-01-08 |
-| 318488051028 | 26124532 | 2026-01-09 |
-| 345358925004 | 46917363 | 2026-01-09 |
-| 238532267221 | 16709378 | 2026-01-08 |
-| 265396260385 | 32220546 | 2026-01-08 |
+| DELIVERY_ID | DASHER_ID | IGUAZU_DATE | PICKUP_LATENESS | DROPOFF_LATENESS | TOTAL_LATENESS |
+|-------------|-----------|-------------|-----------------|------------------|----------------|
+| 189437704884 | 32119799 | 2026-01-10 | -1.23 | 11.25 | 10.02 |
+| 271588294906 | 58574964 | 2026-01-11 | 21.83 | -2.75 | 19.08 |
+| 268642984074 | 35117986 | 2026-01-10 | 2.53 | 7.47 | 10.00 |
+| 247796947897 | 56763196 | 2026-01-11 | 16.22 | -1.58 | 14.63 |
+| 311900352795 | 51668473 | 2026-01-11 | 9.48 | -1.67 | 7.82 |

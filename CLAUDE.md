@@ -16,8 +16,13 @@ Dx = Dasher
 Cx = Consumer
 Comms = Consumer
 
+# Model Scores
+You can access the model scores from 
+
 # Important
 - When querying large tables like dimension_deliveries ALWAYS restrict by date. If you don't know what dates to restrict by, ask. 
 - Queries often take long, this is because we're competing with other folks in th ecompany, and queries can sometime be queued for a while. Only restart them if they take more than 10 monitues
+
+
 
 
